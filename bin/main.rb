@@ -31,8 +31,9 @@ class Interface
         welcomeNewUser()
     end
 
-
+    
   def existing_user
+    @prompt.say("I am Andrew Ryan, and I'm here to ask you a question.")
     user_name = @prompt.ask("What is your username?")
     if User.find_by(name: user_name) == nil
         @prompt.say("Sorry, we don't recognize you. Try CREATING A NEW ACCOUNT.")
@@ -47,7 +48,13 @@ class Interface
 
 
   def exit_program
-    @prompt.say("Have a great day!")
+    system "clear"
+    @prompt.say("We all make choices, but in the end, our choices make us. 
+        
+        Thanks for stopping by, take care!
+        
+        
+")
     exit!
   end
 
@@ -83,21 +90,22 @@ class Interface
 
 
     def getting_money
-        @prompt.select("Okay #{@user[:name]}, you got this bread.") do |menu|
-                menu.choice "Take $100 for your labor", -> {@user[:wallet]}
+        @prompt.select("Okay #{@user[:name]}, you got an hour's worth of bread.") do |menu|
+                menu.choice "Take $15 for your labor", -> {@user[:wallet]}
                 ketchup = User.find_by(name: @user[:name])
                 @user = ketchup
                 #binding.pry
-                @user[:wallet]+=100
+                @user[:wallet]+=15
                 @user.save
-                puts "Your wallet is now $#{@user[:wallet]}."
             end
+            puts "Your wallet is now $#{@user[:wallet]}."
             main_menu()
         end
 
 
-    def kitchen_items#returns array of all items in your fridge
-        @prompt.select("Here's what's in your fridge.", ) do |menu|
+    def kitchen_items #returns array of all items in your fridge
+        puts "Your wallet is $#{@user[:wallet]}."
+        @prompt.select("Here's what's in your fridge.") do |menu|
             @user = User.find_by(name: @user[:name])
             #binding.pry
             items = @user.items.map { |item| item.name}
@@ -106,18 +114,25 @@ class Interface
             menu.choice "Aw, okay.", -> {main_menu()}
             menu.choice "Yeah, I could eat.", -> {self.eat}
         end
+
     end
 
     def eat
-        # binding.pry
+        puts "Your wallet is $#{@user[:wallet]}."
         items = @user.items
         display_items = items.each_with_object({}) do |item, hash|
             hash[item.name] = item
         end  
-        choice = @prompt.select("What would you like to eat today?", display_items)
-        
-        choice.destroy
-
+           #   binding.pry
+        if display_items.length == 0
+            @prompt.select("Looks like the only pickle we have is the one we're in! We're running on empty!") do |menu|
+                menu.choice "Go shopping!", -> {shopping()}
+            end
+        end
+        decision = @prompt.select("What would you like to eat today?", display_items)
+        # binding.pry
+        nommers = KitchenItem.find_by(item_id: decision.id, user_id: @user.id)
+        nommers.destroy
         self.kitchen_items
         # menu.choice (@user.items.map { |item| item.name})
     end
@@ -136,7 +151,7 @@ class Interface
     def momErrand
         wholeWheatBread = Item.find_by(name:"whole wheat bread")
         KitchenItem.create(user_id: @user.id, item_id: wholeWheatBread.id)
-        honeyNutCheerios = Item.find_by(name: "Honey Nut Cheerios")
+        honeyNutCheerios = Item.find_by(name:"Honey Nut Cheerios")
         KitchenItem.create(user_id: @user.id, item_id: honeyNutCheerios.id)
         salt = Item.find_by(name: "salt")
         KitchenItem.create(user_id: @user.id, item_id: salt.id)
@@ -148,15 +163,42 @@ class Interface
 
      def items_names
         Item.all.map do |items|
-            items.name
+            {"#{items.name} is #{items.price}": items.id}
         end
      end
 
+
      def shopping
         system "clear"
+        puts "Your wallet is $#{@user[:wallet]}."
         purchase = @prompt.select("Welcome to Jay Bridge Deli", [items_names])
-        Item.find_by(name: purchase)
+       # binding.pry
+        purchased_item = Item.find(purchase) # object!
+        
+        @prompt.select("Are you sure you want to purchase #{purchased_item.name}?") do |menu|
+            menu.choice "Yes, buy #{purchased_item.name} for #{purchased_item.price}.", -> {make_purchase(purchased_item)}
+            menu.choice "Go back home.", -> {main_menu()}
      end
+
+    end
+
+
+    def make_purchase(purchased_item) 
+        #TODO: deplete wallet balance while 
+        # adding to kitchen_items.
+        wallet_after_purchase = @user[:wallet] - purchased_item.price
+        @user.update(wallet: wallet_after_purchase)
+      ######  nommers = KitchenItems.find_by(item_id: decision.id, user_id: @user.id)
+        purchased_item_update_kitchen = Item.find_by(price: purchased_item.price)
+        KitchenItem.create(user_id: @user.id, item_id: purchased_item_update_kitchen.id)
+        @prompt.select("You have now just purchased #{purchased_item.name}.
+            Your current wallet balance is $#{wallet_after_purchase}. 
+            What would you like to do now?") do |menu|
+            menu.choice "Buy more things.", -> {shopping()}
+            menu.choice "Go back home.", -> {main_menu()}
+        end
+    end
+
 
 
     # def random_event
@@ -171,6 +213,10 @@ class Interface
     #                 end
     #         end
     # end
+    #end
+    #end
+    #end
+
 
 
 
