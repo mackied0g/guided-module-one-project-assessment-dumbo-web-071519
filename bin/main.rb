@@ -158,11 +158,11 @@ class Interface
         #binding.pry
         @prompt.say("NOM NOM NOM NOM! You just ate #{decision.name}. What a tasty delight!")
         nommers.destroy
-        #binding.pry
+        binding.pry
         #puts "NOM NOM NOM NOM! You just ate #{nommers}. What a tasty delight!"
         self.kitchen_items
         # menu.choice (@user.items.map { |item| item.name})
-        binding.pry
+        #binding.pry
     end
     
 
