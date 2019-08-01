@@ -104,9 +104,9 @@ class Interface
 
     def getting_money
         @prompt.select("Okay #{@user[:name]}, you got an hour's worth of bread.") do |menu|
-                menu.choice "Take $15 for your hour of labor.", -> {@user[:wallet]}
-                ketchup = User.find_by(name: @user[:name])
-                @user = ketchup
+           # binding.pry    
+            menu.choice "Take $15 for your hour of labor.", -> {@user[:wallet]}
+             #   @user = User.find_by(name: @user[:name])
                # binding.pry
                 @user[:wallet]+=15
                 @user.save
@@ -117,7 +117,8 @@ class Interface
 
 
     def kitchen_items #returns array of all items in your fridge
-        puts "Your wallet is $#{@user[:wallet]}."
+        puts "Your wallet is $#{@user[:wallet]}.
+        "
         
         @prompt.select("Here's what's in your fridge.") do |menu|
             @user = User.find_by(name: @user[:name])
@@ -139,11 +140,14 @@ class Interface
     def eat
         puts "Your wallet is $#{@user[:wallet]}."
         items = @user.items
+       #binding.pry
         display_items = items.each_with_object({}) do |item, hash|
             hash[item.name] = item
         end  
-        #display_items is a hash
-           #binding.pry
+        #item.name is the key in display_items
+        #display_items is a hash of item object, 
+            #first one because find_by
+        ######binding.pry
         if display_items.length == 0
             @prompt.select("Looks like the only pickle we have is the one we're in. We're running on empty!") do |menu|
                 menu.choice "Go shopping!", -> {shopping()}
@@ -165,16 +169,6 @@ class Interface
         #binding.pry
     end
     
-
-    # def eat
-    #     kitchen_items()
-    #     @prompt.select("What are you in the mood for?") do |menu| 
-    #         #eat_food = kitchen_items.to_str
-    #         menu.choice "Eh, UberEats exists and is an inherently better app. Sorry, Mackenzie.", -> {main_menu()}
-    #     end
-
-    # end
-
 
     def momErrand
         wholeWheatBread = Item.find_by(name:"whole wheat bread")
