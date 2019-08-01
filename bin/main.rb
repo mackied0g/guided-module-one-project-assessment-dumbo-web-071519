@@ -12,6 +12,17 @@ class Interface
 
   def login
     #initial login screen using tty-prompt.
+    @prompt.say("WELCOME TO KITCHEN STALKER!
+      
+        ")
+    sleep(1)
+    @prompt.say("er...
+        
+        
+        
+        ")
+        sleep(1)
+    @prompt.say("WELCOME TO KITCHEN STOCKER!")
     @prompt.select("LOGIN or CREATE NEW ACCOUNT?") do |menu|
         menu.choice "LOGIN", -> {existing_user()}
         menu.choice "CREATE AN ACCOUNT", -> {new_user()}
@@ -24,7 +35,6 @@ class Interface
     @prompt.say("Welcome, one and all!")
     user_hash = @prompt.collect do 
         key(:name).ask("Create a username.")
-        # key(:wallet).say("Your balance is 200.00.")
         end
         user_hash[:wallet] = 200.00
     @user = User.create(user_hash)
@@ -41,7 +51,6 @@ class Interface
         new_user()
     else
         @user = User.find_by(name: user_name)
-        #do I have to define wallet in @user here as well as line 28?
         @prompt.say ("Welcome back, #{@user[:name]}. Let's get started.")
     end
       main_menu()    
@@ -115,11 +124,11 @@ class Interface
             items = @user.items.map { |item| item.name}
             # binding.pry
             puts items
-            menu.choice "Aw, okay.", -> {main_menu()}
+            menu.choice "I just like staring vacantly into the fridge with no real goal in mind.
+    I'm not hungry, this is just something I do. Take me back home.", -> {main_menu()}
             menu.choice "Yeah, I could eat.", -> {self.eat}
             menu.choice "Macklemore, can we go grocery shopping?", -> {shopping()}
         end
-
     end
 
     def eat
@@ -128,16 +137,23 @@ class Interface
         display_items = items.each_with_object({}) do |item, hash|
             hash[item.name] = item
         end  
-           #   binding.pry
+           #binding.pry
         if display_items.length == 0
-            @prompt.select("Looks like the only pickle we have is the one we're in! We're running on empty!") do |menu|
+            @prompt.select("Looks like the only pickle we have is the one we're in. We're running on empty!") do |menu|
                 menu.choice "Go shopping!", -> {shopping()}
             end
         end
-        decision = @prompt.select("What would you like to eat today?", display_items)
+        decision = @prompt.select("What would you like to eat?", display_items)
         # binding.pry
+        #decision is an OBJECT in the ITEM CLASS
+        #but nommers is also an object except it's in the KitchenItem class, so
+        #it takes in user_id and item_id
         nommers = KitchenItem.find_by(item_id: decision.id, user_id: @user.id)
+        #binding.pry
+        @prompt.say("NOM NOM NOM NOM! You just ate #{decision.name}. What a tasty delight!")
         nommers.destroy
+        #binding.pry
+        #puts "NOM NOM NOM NOM! You just ate #{nommers}. What a tasty delight!"
         self.kitchen_items
         # menu.choice (@user.items.map { |item| item.name})
     end
