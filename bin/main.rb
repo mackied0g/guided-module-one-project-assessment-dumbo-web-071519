@@ -76,7 +76,9 @@ class Interface
         menu.choice "Open fridge", -> {kitchen_items()}
         menu.choice "Go shopping", -> {shopping()}
         menu.choice "Go to work", -> {getting_money()}
-       # menu.choice "~*Random event*~", -> {random_event()}
+       
+       
+        menu.choice "~*Random event*~", -> {random_event()}
         menu.choice "Exit", -> {exit_program()}
         end
         @user.save
@@ -122,7 +124,7 @@ class Interface
         
         @prompt.select("Here's what's in your fridge.") do |menu|
             @user = User.find_by(name: @user[:name])
-            #binding.pry
+           # binding.pry
             #@user is User object
             #@user.items is Item object
             #items is Array
@@ -162,7 +164,9 @@ class Interface
         #binding.pry
         @prompt.say("NOM NOM NOM NOM! You just ate #{decision.name}. What a tasty delight!")
         nommers.destroy
-        binding.pry
+        #
+        
+        #binding.pry
         #puts "NOM NOM NOM NOM! You just ate #{nommers}. What a tasty delight!"
         self.kitchen_items
         # menu.choice (@user.items.map { |item| item.name})
@@ -186,6 +190,7 @@ class Interface
      def items_names
         Item.all.map do |items|
             {"#{items.name} is #{items.price}": items.id}
+         #########   binding.pry
         end
      end
 
@@ -196,10 +201,11 @@ class Interface
         purchase = @prompt.select("Welcome to Jay Bridge Deli", [items_names])
        # binding.pry
         purchased_item = Item.find(purchase) # object!
-        
+       # binding.pry
         @prompt.select("Are you sure you want to purchase #{purchased_item.name}?") do |menu|
             menu.choice "Yes, buy #{purchased_item.name} for #{purchased_item.price}.", -> {make_purchase(purchased_item)}
             menu.choice "Go back home.", -> {main_menu()}
+         #   binding.pry
      end
 
     end
@@ -229,25 +235,32 @@ class Interface
 
 
 
-    # def random_event
-    #     @prompt.select("“This is the central illusion in life: that randomness is a risk, that it is a bad thing...” - Nassim Nicholas Taleb") do |menu|
-    #         menu.choice "Okay...", -> {continue0()}
-    #         def continue0
-    #             @prompt.select("I wonder what will happen...") do |menu|
-    #                 menu.choice "I am afraid.", -> {continue1()}
-    #                 def continue1
-    #                     @prompt.select("There is nothing to fear, #{@user[:name]}.") do |menu|
-    #                         menu.choice "Sounds like something, like, really terrible is gonna happen but ok...", -> {realrandomevent()}
-    #                 end
-    #         end
-    # end
-    #end
-    #end
-    #end
+
+        def random_event
+         @prompt.select("“This is the central illusion in life: that randomness is a risk, that it is a bad thing...” - Nassim Nicholas Taleb") do |menu|
+             menu.choice "Okay...", -> {continue0()}
+            end
+        end
 
 
+        def continue0
+            @prompt.select("I wonder what will happen...") do |menu|
+                menu.choice "I am afraid.", -> {continue1()}
+                menu.choice "Fuck go back.", -> {main_menu()}
+            end 
+        end
 
 
+        def continue1
+            @prompt.select("There is nothing to fear, #{@user[:name]}.") do |menu|
+                 menu.choice "Sounds like something, like, really terrible is gonna happen but ok...", -> {realrandomevent()}
+             end
+        end
+
+
+        def realrandomevent
+
+        end
 
 
     end

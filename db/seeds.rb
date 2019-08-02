@@ -22,3 +22,5 @@ item19 = Item.create(name: "jelly", price: 3.33)
 item20 = Item.create(name: "ice cream", price: 2.19)
 
 KitchenItem.create(user_id: user1.id, item_id: item1.id)
+KitchenItem.create(user_id: user1.id, item_id: item2.id)
+KitchenItem.create(user_id: user1.id, item_id: item3.id)
