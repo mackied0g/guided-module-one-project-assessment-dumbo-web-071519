@@ -117,7 +117,6 @@ class Interface
             main_menu()
         end
 
-
     def kitchen_items #returns array of all items in your fridge
         puts "Your wallet is $#{@user[:wallet]}.
         "
