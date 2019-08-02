@@ -233,10 +233,9 @@ class Interface
     end
 
 
-
-
         def random_event
-         @prompt.select("“This is the central illusion in life: that randomness is a risk, that it is a bad thing...” - Nassim Nicholas Taleb") do |menu|
+         @prompt.select("“This is the central illusion in life: that randomness is a risk, that it is a bad thing...” 
+                        - Nassim Nicholas Taleb") do |menu|
              menu.choice "Okay...", -> {continue0()}
             end
         end
@@ -259,7 +258,8 @@ class Interface
 
         def realrandomevent
 
-        end
+    end
+
 
 
     end

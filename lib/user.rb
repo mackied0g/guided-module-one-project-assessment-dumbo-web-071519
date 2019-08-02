@@ -2,17 +2,13 @@ class User < ActiveRecord::Base
     has_many :kitchen_items
     has_many :items, through: :kitchen_items
 
-        def userItems
+    #     def userItems
     # #     #sum all of specific user's items 
                 
-                self.items.map do |item|
-              foo =  item.price
-              #foo.sum
-              #subtract 
-             #user_wallet =  self[:wallet]
-             #user_wallet-foo
-           #self[:wallet] - foo
-            end
-           # total_items = userItems.sum
-     end
+    #         self.items.map do |item|
+    #         foo =  item.price
+    #         #subtract 
+    #         end
+    #         #total_items = userItems.sum
+    #  end
 end
