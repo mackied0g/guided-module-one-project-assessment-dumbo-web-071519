@@ -78,7 +78,7 @@ class Interface
         menu.choice "Go to work", -> {getting_money()}
        
        
-        menu.choice "~*Random event*~", -> {random_event()}
+        # menu.choice "✨  Random event ✨ ", -> {random_event()}
         menu.choice "Exit", -> {exit_program()}
         end
         @user.save
@@ -105,11 +105,14 @@ class Interface
 
 
     def getting_money
-        @prompt.select("Okay #{@user[:name]}, you got an hour's worth of bread.") do |menu|
-           # binding.pry    
+        @prompt.select("Okay #{@user[:name]}, you got an hour's worth of bread.") do |menu|   
+           puts "..."
+           sleep(1)
+           puts "..."
+           sleep(1)
+           puts "..."
+           sleep(1)
             menu.choice "Take $15 for your hour of labor.", -> {@user[:wallet]}
-             #   @user = User.find_by(name: @user[:name])
-               # binding.pry
                 @user[:wallet]+=15
                 @user.save
             end
@@ -141,14 +144,11 @@ class Interface
     def eat
         puts "Your wallet is $#{@user[:wallet]}."
         items = @user.items
-       #binding.pry
+     
         display_items = items.each_with_object({}) do |item, hash|
             hash[item.name] = item
         end  
-        #item.name is the key in display_items
-        #display_items is a hash of item object, 
-            #first one because find_by
-        ######binding.pry
+        
         if display_items.length == 0
             @prompt.select("Looks like the only pickle we have is the one we're in. We're running on empty!") do |menu|
                 menu.choice "Go shopping!", -> {shopping()}
@@ -156,9 +156,7 @@ class Interface
         end
         decision = @prompt.select("What would you like to eat?", display_items)
         #binding.pry
-        #decision is an OBJECT in the ITEM CLASS
-        #but nommers is also an object except it's in the KitchenItem class, so
-        #it takes in user_id and item_id
+        
         nommers = KitchenItem.find_by(item_id: decision.id, user_id: @user.id)
         #binding.pry
         @prompt.say("NOM NOM NOM NOM! You just ate #{decision.name}. What a tasty delight!")
@@ -166,7 +164,6 @@ class Interface
         #
         
         #binding.pry
-        #puts "NOM NOM NOM NOM! You just ate #{nommers}. What a tasty delight!"
         self.kitchen_items
         # menu.choice (@user.items.map { |item| item.name})
         #binding.pry
@@ -189,7 +186,7 @@ class Interface
      def items_names
         Item.all.map do |items|
             {"#{items.name} is #{items.price}": items.id}
-         #########   binding.pry
+         
         end
      end
 
@@ -211,8 +208,7 @@ class Interface
 
 
     def make_purchase(purchased_item) 
-        #TODO: deplete wallet balance while 
-        # adding to kitchen_items.
+        
         wallet_after_purchase = @user[:wallet] - purchased_item.price
         if wallet_after_purchase <= 0
                 @prompt.select("Oh man, looks like it's time to bring home some bacon.") do |menu|
@@ -233,32 +229,32 @@ class Interface
     end
 
 
-        def random_event
-         @prompt.select("“This is the central illusion in life: that randomness is a risk, that it is a bad thing...” 
-                        - Nassim Nicholas Taleb") do |menu|
-             menu.choice "Okay...", -> {continue0()}
-            end
-        end
+    #     def random_event
+    #      @prompt.select("“This is the central illusion in life: that randomness is a risk, that it is a bad thing...” 
+    #                     - Nassim Nicholas Taleb") do |menu|
+    #          menu.choice "Okay...", -> {continue0()}
+    #         end
+    #     end
 
 
-        def continue0
-            @prompt.select("I wonder what will happen...") do |menu|
-                menu.choice "I am afraid.", -> {continue1()}
-                menu.choice "Fuck go back.", -> {main_menu()}
-            end 
-        end
+    #     def continue0
+    #         @prompt.select("I wonder what will happen...") do |menu|
+    #             menu.choice "I am afraid.", -> {continue1()}
+    #             menu.choice "Fuck go back.", -> {main_menu()}
+    #         end 
+    #     end
 
 
-        def continue1
-            @prompt.select("There is nothing to fear, #{@user[:name]}.") do |menu|
-                 menu.choice "Sounds like something, like, really terrible is gonna happen but ok...", -> {realrandomevent()}
-             end
-        end
+    #     def continue1
+    #         @prompt.select("There is nothing to fear, #{@user[:name]}.") do |menu|
+    #              menu.choice "Sounds like something, like, really terrible is gonna happen but ok...", -> {realrandomevent()}
+    #          end
+    #     end
 
 
-        def realrandomevent
+    #     def realrandomevent
 
-    end
+    # end
 
 
 
