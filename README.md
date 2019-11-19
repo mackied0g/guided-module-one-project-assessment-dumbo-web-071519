@@ -1,52 +1,46 @@
-Module One Final Project
+Kitchen Stalker
 ========================
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
-
-For your final project, you'll be building a Command Line Application.
+A basic Command Line Application. Users can create an account or login to an existing account. 
 
 ---
 
-## Goals (Minimum Requirements)
-
-You will be building a **Command Line CRUD App** that uses a database to persist information. The goal of which is to demonstrate all of the skills that you've learned in module one:
+## What I learned for this project:
 
 - Ruby
 - Object Orientation
 - Relationships (via ActiveRecord)
 - Problem Solving (via creating a Command Line Interface (CLI))
+- TTY-Prompt
 
-Your **minimum requirements** for this project are to build a Command Line App that:
+## Project Overview (Walkthrough)
 
-1. Contains at least three models with corresponding tables, including a join table.
-2. Accesses a Sqlite3 database using ActiveRecord.
-3. Has a CLI that allows users to interact with your database as defined by your _user stories_ (minimum of four; one for each CRUD action).
-4. Uses good OO design patterns. You should have separate models for your runner and CLI interface.
+### Phase 1: Logging In vs. Creating New User:
 
----
+User can Create a new account. If they have an account already, all they need to do is use their username. If the username doesn't exist, they're re-routed to create a new account.
 
-## Project Overview (Timeline)
+Upon logging into an existing account, the user will see their wallet and will have items already stocked in their kitchen. 
 
-### Phase 1: The Setup
+Upon creating a new account, users will follow the storyline, where the user just moved out of their parents' house. The user's mother, as a sign of congratulations and gratitude, stocks the user's refrigerator with pre-selected items and automatically gives the user $200 for more groceries. 
 
-This should take approximately **half a day**.
+### Phase 2: Main Menu Options:
 
-Do not begin coding until you have your pitch approved by an instructor. Do not overthink this. Do not spend your whole day whiteboarding out a schema.
+User has the opportunity to either:
+- View fridge
+- Go grocery shopping
+- Go to work
+- Exit game
 
-#### Planning
+#### View fridge:
 
-Your **first goal** should be to decide on your models and determine the relationships between them. You **must have a minimum of three models consisting of at least _one_ many-to-many relationship.** Here are some ideas:
+#### Go grocery shopping:
+User 
 
-* `Restaurant`, `User`, `Review`: (Yelp domain) A restaurant has many users and an user has many restaurants; reviews belongs to restaurant and to user.
-* `Movie`, `Actor`, `Role`: (IMDb domain) A movie has many actors and an actor has many movies; roles belongs to movie and to actor.
-* `Pizza`, `Topping`, `PizzaTopping`: (Domino's domain) A pizza has many toppings and an topping has many pizzas; pizza_toppings belongs to pizza and to topping.
+#### Go to work
+User can Update their wallet by $15 increments each time they "go to work." The app sleeps for a few seconds, then the users is prompted to take the money they've been given for their shift.
 
-Whiteboard out your ideas and think about what columns you'll want in the corresponding tables, including foreign keys.
-
-* What does your schema look like?
-* What do your relationships look like?
-* Where are foreign keys stored in a many-to-many relationship?
-* etc.
+#### Exit game
+The game displays a [quote from my personal favorite game, Bioshock. Andrew Ryan says, "We all make choices, but in the end, our choices make us."](https://www.youtube.com/watch?v=P9DhpjRklgk) After that quote, the user is thanked for playing the game, and invited to come back to play again. The user is then logged out and the app finishes running. 
 
 Your **second goal** should be to decide on your [user stories](https://en.wikipedia.org/wiki/User_story). You **must have a minimum of four user stories corresponding to the four CRUD actions** to help explain how a user will interact with your app. A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>."`.
 
