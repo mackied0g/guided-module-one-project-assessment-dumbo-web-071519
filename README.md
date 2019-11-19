@@ -5,6 +5,15 @@ A basic Command Line Application. Users can create an account or login to an exi
 
 ---
 
+## To Get Started:
+Feel free to fork and clone this project. To run this in your local terminal, you must have Ruby on your machine. 
+
+Run the program by inputting:
+
+```ruby bin/run.rb```
+
+---
+
 ## What I learned for this project:
 
 - Ruby
